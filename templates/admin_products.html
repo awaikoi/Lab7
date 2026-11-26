@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from "_macros.html" import admin_nav %}
+{% block title %}Керування товарами{% endblock %}
+{% block content %}
+{{ admin_nav('products') }}
+
+<header class="mb-6 flex flex-wrap items-end justify-between gap-3">
+    <div>
+        <p class="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">Адміністрування</p>
+        <h1 class="text-3xl font-bold tracking-tight">Товари</h1>
+    </div>
+
+    <a href="{{ url_for('admin.new_product') }}"
+       class="inline-flex rounded-xl bg-accent px-5 py-3 text-sm font-bold text-white">
+        + Додати товар
+    </a>
+</header>
+
+<div id="adminProducts"
+     class="grid grid-cols-1 gap-4 md:grid-cols-3">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin-products.js') }}"></script>
+{% endblock %}

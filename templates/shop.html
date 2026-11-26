@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Магазин{% endblock %}
+{% block content %}
+<header class="mb-6 flex flex-wrap items-end justify-between gap-3">
+    <div>
+        <p class="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">Каталог</p>
+        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Знайдіть свою знахідку</h1>
+    </div>
+</header>
+
+<form id="filterForm"
+      class="mb-6 rounded-2xl border border-line bg-surface p-4 shadow-[var(--shadow-sm)]">
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-12">
+
+        <label class="relative md:col-span-3">
+            <span class="sr-only">Пошук товару</span>
+            <svg class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+            <input name="q" placeholder="Пошук товару"
+                   class="w-full rounded-xl border border-line bg-[#fbfaf8] py-2.5 pl-9 pr-3 text-sm">
+        </label>
+
+        <select name="category" class="rounded-xl border border-line bg-[#fbfaf8] px-3 py-2.5 text-sm md:col-span-2">
+            <option value="">Усі категорії</option>
+        </select>
+
+        <input name="min_price" type="number" min="0" step="0.01" placeholder="Ціна від"
+               class="rounded-xl border border-line bg-[#fbfaf8] px-3 py-2.5 text-sm md:col-span-2">
+
+        <input name="max_price" type="number" min="0" step="0.01" placeholder="Ціна до"
+               class="rounded-xl border border-line bg-[#fbfaf8] px-3 py-2.5 text-sm md:col-span-2">
+
+        <select name="sort" class="rounded-xl border border-line bg-[#fbfaf8] px-3 py-2.5 text-sm md:col-span-2">
+            <option value="id">Спочатку нові</option>
+            <option value="price">Дешевші</option>
+            <option value="price_desc">Дорожчі</option>
+            <option value="name">За назвою</option>
+            <option value="new">Нові</option>
+        </select>
+
+        <button type="reset" class="rounded-xl border border-line px-4 py-2.5 text-sm font-semibold text-ink/70 transition hover:border-accent/30 hover:text-accent md:col-span-1">
+            Скинути
+        </button>
+
+        <label class="flex items-center gap-2.5 text-sm text-ink/70 md:col-span-12">
+            <input type="checkbox" name="on_sale" class="h-4 w-4 accent-[#881337]">
+            Показувати лише товари зі знижкою
+        </label>
+    </div>
+</form>
+
+<div id="products"
+     class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+</div>
+
+<div id="pagination"
+     class="mt-6 flex flex-wrap justify-center gap-2">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/shop.js') }}"></script>
+{% endblock %}

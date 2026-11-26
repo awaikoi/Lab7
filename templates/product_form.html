@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% from "_macros.html" import admin_nav %}
+{% block title %}{{ 'Новий товар' if is_new else 'Редагування товару' }}{% endblock %}
+{% block content %}
+{{ admin_nav('products') }}
+
+<header class="mb-6">
+    <p class="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">Адміністрування</p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ 'Новий товар' if is_new else 'Редагування товару' }}</h1>
+</header>
+
+<form id="productForm"
+      data-product-id="{{ product_id or '' }}"
+      class="grid gap-5 rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-sm)] sm:grid-cols-2 sm:p-7">
+
+    <div>
+        <label class="mb-1.5 block text-sm font-semibold">Назва</label>
+
+        <input name="name"
+               maxlength="100"
+               required
+               class="block w-full rounded-xl border border-line bg-[#fff7f9] px-3 py-2.5">
+    </div>
+
+    <div>
+        <label class="mb-1.5 block text-sm font-semibold">Ціна</label>
+
+        <input name="price"
+               type="number"
+               min="0"
+               step="0.01"
+               required
+               class="block w-full rounded-xl border border-line bg-[#fff7f9] px-3 py-2.5">
+    </div>
+
+    <div>
+        <label class="mb-1.5 block text-sm font-semibold">Знижка (%)</label>
+
+        <input name="discount_percent"
+               type="number"
+               min="0"
+               max="100"
+               value="0"
+               class="block w-full rounded-xl border border-line bg-[#fff7f9] px-3 py-2.5">
+    </div>
+
+    <div>
+        <label class="mb-1.5 block text-sm font-semibold">Категорія</label>
+
+        <select name="category_id"
+                class="block w-full rounded-xl border border-line bg-[#fff7f9] px-3 py-2.5">
+
+            <option value="">Без категорії</option>
+        </select>
+    </div>
+
+    <div class="sm:col-span-2">
+        <label for="product-image-url" class="mb-1.5 block text-sm font-semibold">URL зображення</label>
+        <input id="product-image-url"
+               name="image"
+               maxlength="500"
+               placeholder="https://example.com/image.jpg"
+               class="block w-full rounded-xl border border-line bg-[#fff7f9] px-3 py-2.5">
+    </div>
+
+    <div class="sm:col-span-2">
+        <label for="product-image-file" class="mb-1.5 block text-sm font-semibold">Завантажити файл</label>
+        <input id="product-image-file"
+               name="image_file"
+               type="file"
+               accept="image/jpeg,image/png,image/gif,image/webp"
+               class="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-accent file:px-3 file:py-2 file:font-semibold file:text-white">
+        <p class="mt-1.5 text-xs text-ink/55">JPG, PNG, GIF або WEBP до 5 МБ. Якщо вибрані обидва варіанти, файл матиме пріоритет.</p>
+
+        <div class="mt-3 aspect-[4/3] w-full max-w-sm overflow-hidden rounded-xl border border-line bg-[#fff7f9]">
+            <div id="imagePreviewPlaceholder" class="flex h-full items-center justify-center px-6 text-center text-sm text-ink/45">
+                Зображення з’явиться тут
+            </div>
+            <img id="imagePreview"
+                 hidden
+                 class="h-full w-full object-contain p-2"
+                 alt="Попередній перегляд зображення товару">
+        </div>
+    </div>
+
+    <div id="formErrors" class="text-sm text-red-700 sm:col-span-2"></div>
+
+    <button type="submit"
+            class="justify-self-start rounded-xl bg-accent px-6 py-3 text-sm font-bold text-white sm:col-span-2">
+        Зберегти
+    </button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/product-form.js') }}" defer></script>
+{% endblock %}

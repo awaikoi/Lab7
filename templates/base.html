@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Наш проєкт{% endblock %}</title>
+    <!-- Tailwind CSS 4 (збірка для браузера). Зручно для навчання; для робочого сайту CSS збирають заздалегідь. -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+    <style type="text/tailwindcss">
+        @theme {
+            --color-base: #ff91b4;
+            --color-surface: #ffaac5;
+            --color-line: #ffd1df;
+            --color-ink: #4c0519;
+            --color-accent: #881337;
+        }
+
+        :root {
+            --shadow-sm: 0 2px 10px rgba(35, 33, 31, 0.05);
+            --shadow-md: 0 14px 40px rgba(35, 33, 31, 0.08);
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            background:
+                radial-gradient(circle at 10% 0%, rgba(136, 19, 55, 0.08), transparent 24rem),
+                #ff91b4;
+        }
+        ::selection { background: #ffd1df; color: #4c0519; }
+        input, select, textarea, button { outline: none; }
+        input:focus, select:focus, textarea:focus {
+            border-color: #881337 !important;
+            box-shadow: 0 0 0 3px rgba(136, 19, 55, 0.12);
+        }
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 4px;
+            height: 2px;
+            border-radius: 999px;
+            background: #881337;
+            transform: scaleX(0);
+            transition: transform 160ms ease;
+        }
+        .nav-link:hover::after,
+        .nav-link-active::after { transform: scaleX(1); }
+        .product-card { transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease; }
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: #d5c9bf;
+            box-shadow: var(--shadow-md);
+        }
+        .product-card button { transition: transform 120ms ease, background 120ms ease; }
+        .product-card button:active { transform: scale(.97); }
+        @media (max-width: 1023px) {
+            #menu.open { display: flex; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { transition-duration: 0.01ms !important; }
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+
+{# Пункти меню: (endpoint, назва) #}
+{% set nav_items = [
+    ('home', 'Головна'),
+    ('shop.shop', 'Магазин'),
+    ('shop.cart', 'Кошик'),
+    ('about', 'Про нас'),
+    ('api_demo', 'API демо'),
+    ('feedback.feedback', "Зворотний зв'язок"),
+    ('admin.admin', 'Адмін-панель'),
+] %}
+
+<body class="flex min-h-screen flex-col bg-base font-sans text-ink antialiased">
+    <header class="sticky top-0 z-40 px-3 pt-3">
+        <nav class="mx-auto flex min-h-[68px] max-w-6xl flex-wrap items-center justify-between rounded-2xl border border-line/90 bg-surface px-4 shadow-[var(--shadow-sm)] backdrop-blur lg:px-5">
+            <a href="{{ url_for('home') }}" class="flex items-center gap-2.5 text-lg font-bold tracking-tight text-ink">
+                <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-white shadow-sm">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path d="M4 7.5h16l-1.5 10.5H5.5L4 7.5Z"/>
+                        <path d="M8 7.5V6a4 4 0 0 1 8 0v1.5"/>
+                    </svg>
+                </span>
+                <span>Магазин<span class="text-accent">.</span></span>
+            </a>
+
+            <button id="menu-toggle" type="button" class="rounded-xl border border-line p-2 text-ink/80 transition hover:bg-base lg:hidden" aria-label="Відкрити меню" aria-expanded="false" aria-controls="menu">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+
+            <ul id="menu" class="mt-2 hidden w-full flex-col gap-1 pb-3 lg:mt-0 lg:flex lg:w-auto lg:flex-row lg:items-center lg:pb-0">
+                {% for endpoint, label in nav_items %}
+                <li>
+                    <a href="{{ url_for(endpoint) }}"
+                       class="nav-link block rounded-lg px-3 py-2 text-sm font-medium transition lg:py-2
+                              {{ 'nav-link-active text-accent' if request.endpoint == endpoint else 'text-ink/65 hover:text-ink' }}">
+                        {{ label }}
+                        {% if endpoint == 'shop.cart' %}
+                            <span
+                                id="cart-badge"
+                                class="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[11px] font-bold text-white"
+                            >0</span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+
+    <main class="mx-auto w-full max-w-6xl grow px-3 py-7 sm:px-5 sm:py-9">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="mt-2 border-t border-line/80 bg-surface">
+        <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-5 py-6 text-sm text-ink/55 sm:flex-row">
+            <p>&copy; {{ current_year }} Магазин. Усі права захищені.</p>
+            <p>Зроблено з турботою про кожну покупку</p>
+        </div>
+    </footer>
+
+    <script>
+        // Меню на вузьких екранах: показати / приховати
+        const toggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
+        toggle.addEventListener('click', () => {
+            const opened = menu.classList.toggle('hidden') === false;
+            menu.classList.toggle('open', opened);
+            toggle.setAttribute('aria-expanded', opened);
+            toggle.setAttribute('aria-label', opened ? 'Закрити меню' : 'Відкрити меню');
+        });
+    </script>
+    <div id="toasts"
+        class="fixed right-4 top-4 z-50 w-80 max-w-[90vw]">
+    </div>
+
+    <div id="loading-bar"
+        class="fixed left-0 top-0 z-[100] h-[3px] w-0 bg-accent transition-all">
+    </div>
+
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

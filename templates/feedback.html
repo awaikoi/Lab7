@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Зворотний зв'язок{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+    <header class="mb-6 text-center">
+        <p class="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">На зв'язку</p>
+        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Зворотний зв'язок</h1>
+        <p class="mt-3 text-sm text-ink/55">Напишіть нам — ми уважно розглянемо ваше повідомлення.</p>
+    </header>
+
+    <form id="feedbackForm" class="rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-sm)] sm:p-7">
+        <p id="formError" class="mb-4 hidden rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700"></p>
+        <div class="space-y-5">
+            <div>
+                <label class="mb-1.5 block text-sm font-semibold">Ім'я</label>
+                <input name="name" maxlength="100" required
+                       class="block w-full rounded-xl border border-line bg-[#fbfaf8] px-3 py-3">
+                <p data-error="name" class="mt-1 text-sm text-red-700"></p>
+            </div>
+            <div>
+                <label class="mb-1.5 block text-sm font-semibold">Email</label>
+                <input name="email" type="email" required
+                       class="block w-full rounded-xl border border-line bg-[#fbfaf8] px-3 py-3">
+                <p data-error="email" class="mt-1 text-sm text-red-700"></p>
+            </div>
+            <div>
+                <label class="mb-1.5 block text-sm font-semibold">Повідомлення</label>
+                <textarea name="message" maxlength="2000" required rows="5"
+                          class="block w-full resize-y rounded-xl border border-line bg-[#fbfaf8] px-3 py-3"></textarea>
+                <p data-error="message" class="mt-1 text-sm text-red-700"></p>
+            </div>
+            <button type="submit" class="w-full rounded-xl bg-accent px-5 py-3.5 text-sm font-bold text-white">
+                Надіслати повідомлення
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
+{% endblock %}

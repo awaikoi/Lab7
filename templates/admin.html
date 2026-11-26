@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% from "_macros.html" import admin_nav %}
+
+{% block title %}Адмін-панель{% endblock %}
+
+{% block content %}
+
+{{ admin_nav('orders') }}
+
+<header class="mb-6">
+    <p class="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">Адміністрування</p>
+    <h1 class="text-3xl font-bold tracking-tight">Огляд магазину</h1>
+</header>
+
+<div id="statistics"
+     class="mb-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
+</div>
+
+<section class="mb-8">
+    <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <div>
+            <h2 class="text-xl font-bold">Замовлення</h2>
+            <p class="mt-1 text-sm text-ink/55">Перегляд і керування замовленнями магазину.</p>
+        </div>
+        <label class="flex items-center gap-2 text-sm font-medium">
+            <span class="text-ink/60">Статус</span>
+            <select id="statusFilter"
+                    class="rounded-xl border border-line bg-surface px-3 py-2.5">
+                <option value="">Усі замовлення</option>
+                <option>Нове</option>
+                <option>В обробці</option>
+                <option>Відправлено</option>
+                <option>Доставлено</option>
+                <option>Скасовано</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="overflow-x-auto rounded-2xl border border-line bg-surface shadow-[var(--shadow-sm)]">
+        <table class="w-full min-w-[760px] text-left text-sm">
+            <thead class="bg-[#fff7f9] text-xs uppercase tracking-wide text-ink/60">
+                <tr class="border-b border-line">
+                    <th class="px-4 py-3 font-semibold">№</th>
+                    <th class="px-4 py-3 font-semibold">Email</th>
+                    <th class="px-4 py-3 font-semibold">Сума</th>
+                    <th class="px-4 py-3 font-semibold">Статус</th>
+                    <th class="px-4 py-3 font-semibold">Дата</th>
+                    <th class="px-4 py-3 font-semibold">Дії</th>
+                </tr>
+            </thead>
+            <tbody id="orders"></tbody>
+        </table>
+    </div>
+</section>
+
+<section>
+    <div class="mb-4">
+        <h2 class="text-xl font-bold">Відгуки</h2>
+        <p class="mt-1 text-sm text-ink/55">Повідомлення, залишені покупцями.</p>
+    </div>
+    <div id="feedbackList" class="grid grid-cols-1 gap-4 lg:grid-cols-2"></div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

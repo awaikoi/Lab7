@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "_macros.html" import admin_nav %}
+
+{% block title %}Категорії{% endblock %}
+
+{% block content %}
+
+{{ admin_nav('categories') }}
+
+<header class="mb-6 flex flex-wrap items-end justify-between gap-3">
+    <div>
+        <p class="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">Адміністрування</p>
+        <h1 class="text-3xl font-bold tracking-tight">Категорії товарів</h1>
+    </div>
+</header>
+
+<form id="categoryForm"
+      class="mb-6 flex flex-wrap items-end gap-3 rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-sm)]">
+
+    <label class="grow">
+        <span class="mb-1 block text-sm font-medium">
+            Назва
+        </span>
+
+        <input name="name"
+               maxlength="100"
+               required
+               class="w-full rounded-xl border border-line bg-[#fff7f9] px-3 py-2.5">
+    </label>
+
+    <label>
+        <span class="mb-1 block text-sm font-medium">
+            Батьківська категорія
+        </span>
+
+        <select name="parent_id"
+                class="rounded-xl border border-line bg-[#fff7f9] px-3 py-2.5">
+
+            <option value="">
+                Коренева категорія
+            </option>
+
+        </select>
+    </label>
+
+    <button type="submit"
+            class="rounded-xl bg-accent px-5 py-2.5 text-sm font-bold text-white">
+        Додати
+    </button>
+</form>
+
+<section class="rounded-2xl border border-line bg-surface p-3 shadow-[var(--shadow-sm)]">
+    <div id="categories" class="divide-y divide-line"></div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin-categories.js') }}"></script>
+{% endblock %}
